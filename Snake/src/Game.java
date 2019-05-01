@@ -64,6 +64,8 @@ public class Game {
 			System.out.print(" ");
 		}
 		snake.print();
+
+		
 	}
 
 	Game() throws Exception { // --- Contructor
@@ -97,12 +99,40 @@ public class Game {
 
 				char rckey = (char) rkey;
 				// left right up down
-				if (rckey == '%' || rckey == '\'' || rckey == '&' || rckey == '(') {
-					printSnake();
+				int x= snake.linkedsnake.head.data.getX();
+				int y= snake.linkedsnake.head.data.getY();
+				switch(rckey) {
+				case '%':
+					cn.getTextWindow().setCursorPosition(x, y);
+					snake.print();
+					for (int i = 0; i < snake.linkedsnake.size(); i++) {
+						System.out.print(" ");
+					}
+					break;
+				case '\'':
+					cn.getTextWindow().setCursorPosition(x, y);
+					for (int i = 0; i < snake.linkedsnake.size(); i++) {
+						System.out.print(" ");
+					}
+					snake.print();
+					break;
+				case '&' :
+					cn.getTextWindow().setCursorPosition(x, y);
+					for (int i = 0; i < snake.linkedsnake.size(); i++) {
+						System.out.print(" ");
+					}
+					snake.print();
+					break;
+				case '(':
+					cn.getTextWindow().setCursorPosition(x, y);
+					for (int i = 0; i < snake.linkedsnake.size(); i++) {
+						System.out.print(" ");
+					}
+					snake.print();
+					break;
 				}
-					
-				else
-					cn.getTextWindow().output(rckey);
+				
+				
 				keypr=0;
 			}
 			Thread.sleep(20); 
