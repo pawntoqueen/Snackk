@@ -19,7 +19,6 @@ public class Game {
 	public int rkey; // key (for press/release)
 	// ----------------------------------------------------
 	
-	int px =cn.getTextWindow().getCursorX(), py = cn.getTextWindow().getCursorY();
 
 	char[][] screen = new char[21][60];
 	Snake snake;
@@ -58,7 +57,12 @@ public class Game {
 	}
 	
 	public void printSnake() {
-		cn.getTextWindow().setCursorPosition(26, 10);
+		int x= snake.linkedsnake.head.data.getX();
+		int y= snake.linkedsnake.head.data.getY();
+		cn.getTextWindow().setCursorPosition(x, y);
+		for (int i = 0; i < snake.linkedsnake.size(); i++) {
+			System.out.print(" ");
+		}
 		snake.print();
 	}
 
@@ -66,7 +70,7 @@ public class Game {
 		snake = new Snake();
 		printScreen();
 		printSnake();
-		int px =cn.getTextWindow().getCursorX(), py = cn.getTextWindow().getCursorY();
+		int px =cn.getTextWindow().getCursorX()-1, py = cn.getTextWindow().getCursorY();
 		 klis=new KeyListener() {
 	         public void keyTyped(KeyEvent e) {}
 	         public void keyPressed(KeyEvent e) {
@@ -83,18 +87,20 @@ public class Game {
 		while(true) {
 			if (keypr == 1) { // if keyboard button pressed
 				if (rkey == KeyEvent.VK_LEFT)
-					px--;
+					snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX()-1);
 				if (rkey == KeyEvent.VK_RIGHT)
-					px++;
+					snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX()+1);
 				if (rkey == KeyEvent.VK_UP)
-					py--;
+					snake.linkedsnake.head.data.setY(snake.linkedsnake.head.data.getY()-1);
 				if (rkey == KeyEvent.VK_DOWN)
-					py++;
+					snake.linkedsnake.head.data.setY(snake.linkedsnake.head.data.getY()+1);
 
 				char rckey = (char) rkey;
 				// left right up down
-				if (rckey == '%' || rckey == '\'' || rckey == '&' || rckey == '(')
-					cn.getTextWindow().output(px, py,'7'); // VK kullanmadan test teknigi
+				if (rckey == '%' || rckey == '\'' || rckey == '&' || rckey == '(') {
+					printSnake();
+				}
+					
 				else
 					cn.getTextWindow().output(rckey);
 				keypr=0;

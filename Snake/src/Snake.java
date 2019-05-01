@@ -24,7 +24,7 @@ public class Snake {
 
 	}
 
-	public void add(Object input) {
+	public void add(Node_data input) {
 		linkedsnake.add(input);	
 
 	}
@@ -34,12 +34,9 @@ public class Snake {
 
 	}
 	
-	Snake() {
-		linkedsnake = new SingleLinkedList();
-		
-		for (int i = 0; i < 3; i++) {
+	public char randomChar() {
 			int randomnum = rndm.nextInt(4) + 1;
-			Node_data nd = new Node_data();
+			
 			char data = ' ';
 			switch (randomnum) {
 			case 1:
@@ -56,12 +53,21 @@ public class Snake {
 				break;
 
 			}
-
+		return data;
+	}
+	
+	Snake() {
+		linkedsnake = new SingleLinkedList();
+		for (int i = 0; i < 3; i++) {
+			char data=randomChar();
+			Node_data nd = new Node_data();
 			nd.setDnapart(data);
-			nd.setX(12);
-			nd.setY(15);
+			nd.setX(26+i);
+			nd.setY(10+i);
 			add(nd);
 		}
+		
+		
 		
 	}
 }

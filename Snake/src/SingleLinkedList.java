@@ -11,7 +11,7 @@ public class SingleLinkedList {
 		
 		public SingleLinkedList (Node_SLL head)
 		{
-			this.head = head;
+			this.head =head;
 		}
 		
 		public void add (Object input)
@@ -24,27 +24,28 @@ public class SingleLinkedList {
 			else
 			{
 				Node_SLL temp = head;
-				while(temp.getLink() != null)
-				{
-					temp = temp.getLink();
-				}
-				temp.setLink(inputNode_SLL);
+				head= inputNode_SLL;
+				head.setLink(temp);
 			}
 			
 		}
 		
 		public String display ()
 		{
-			Node_SLL temp = head;
-			String output = "";
 			
+			String output = "";
+			String dlr="";
+			Node_SLL temp = head;
 			while(temp != null)
 			{
-				output += ((Node_data) temp.getData()).getDnapart() +" ";
+				output += ((Node_data) temp.getData()).getDnapart();
 				temp = temp.getLink();
 			}
+			char[] i = output.toCharArray();
+			for (int j = i.length-1; j >=0; j--) {
+				dlr+=i[j];
+			}
 			
-		
 			return output;
 		}
 		
@@ -96,7 +97,7 @@ public class SingleLinkedList {
 				
 				while(temp != null)
 				{
-					if(((int) temp.getData()) > ((int) max))
+					if(((int) temp.getData().getDnapart()) > ((int) max))
 					{
 						max = temp.getData();
 					}
