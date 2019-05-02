@@ -18,7 +18,6 @@ public class Game {
 	public int keypr; // key pressed?
 	public int rkey; // key (for press/release)
 	// ----------------------------------------------------
-	
 
 	char[][] screen = new char[21][60];
 	Snake snake;
@@ -52,91 +51,55 @@ public class Game {
 		cn.getTextWindow().setCursorPosition(65, 20);
 
 		System.out.println("Time:  " + time);
-		
 
 	}
-	
+
 	public void printSnake() {
-		int x= snake.linkedsnake.head.data.getX();
-		int y= snake.linkedsnake.head.data.getY();
+		int x = snake.linkedsnake.head.data.getX();
+		int y = snake.linkedsnake.head.data.getY();
 		cn.getTextWindow().setCursorPosition(x, y);
-		for (int i = 0; i < snake.linkedsnake.size(); i++) {
-			System.out.print(" ");
-		}
 		snake.print();
 
-		
 	}
 
 	Game() throws Exception { // --- Contructor
 		snake = new Snake();
 		printScreen();
 		printSnake();
-		int px =cn.getTextWindow().getCursorX()-1, py = cn.getTextWindow().getCursorY();
-		 klis=new KeyListener() {
-	         public void keyTyped(KeyEvent e) {}
-	         public void keyPressed(KeyEvent e) {
-	            if(keypr==0) {
-	               keypr=1;
-	               rkey=e.getKeyCode();
-	            }
-	         }
-	         public void keyReleased(KeyEvent e) {}
-	      };
-	      cn.getTextWindow().addKeyListener(klis);
-	      // ----------------------------------------------------
-	      
-		while(true) {
-			if (keypr == 1) { // if keyboard button pressed
-				if (rkey == KeyEvent.VK_LEFT)
-					snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX()-1);
-				if (rkey == KeyEvent.VK_RIGHT)
-					snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX()+1);
-				if (rkey == KeyEvent.VK_UP)
-					snake.linkedsnake.head.data.setY(snake.linkedsnake.head.data.getY()-1);
-				if (rkey == KeyEvent.VK_DOWN)
-					snake.linkedsnake.head.data.setY(snake.linkedsnake.head.data.getY()+1);
-
-				char rckey = (char) rkey;
-				// left right up down
-				int x= snake.linkedsnake.head.data.getX();
-				int y= snake.linkedsnake.head.data.getY();
-				switch(rckey) {
-				case '%':
-					cn.getTextWindow().setCursorPosition(x, y);
-					snake.print();
-					for (int i = 0; i < snake.linkedsnake.size(); i++) {
-						System.out.print(" ");
-					}
-					break;
-				case '\'':
-					cn.getTextWindow().setCursorPosition(x, y);
-					for (int i = 0; i < snake.linkedsnake.size(); i++) {
-						System.out.print(" ");
-					}
-					snake.print();
-					break;
-				case '&' :
-					cn.getTextWindow().setCursorPosition(x, y);
-					for (int i = 0; i < snake.linkedsnake.size(); i++) {
-						System.out.print(" ");
-					}
-					snake.print();
-					break;
-				case '(':
-					cn.getTextWindow().setCursorPosition(x, y);
-					for (int i = 0; i < snake.linkedsnake.size(); i++) {
-						System.out.print(" ");
-					}
-					snake.print();
-					break;
-				}
-				
-				
-				keypr=0;
+		klis = new KeyListener() {
+			public void keyTyped(KeyEvent e) {
 			}
-			Thread.sleep(20); 
-		} 
+
+			public void keyPressed(KeyEvent e) {
+				if (keypr == 0) {
+					keypr = 1;
+					rkey = e.getKeyCode();
+				}
+			}
+
+			public void keyReleased(KeyEvent e) {
+			}
+		};
+		cn.getTextWindow().addKeyListener(klis);
+		// ----------------------------------------------------
+
+		while (true) {
+
+			cn.getTextWindow().setCursorPosition(snake.linkedsnake.head.data.getX(),
+					snake.linkedsnake.head.data.getY());
+			System.out.println(" ");
+			snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX() + 1);
+
+			int x = snake.linkedsnake.head.data.getX();
+			int y = snake.linkedsnake.head.data.getY();
+
+			cn.getTextWindow().setCursorPosition(x, y);
+			snake.print();
+
+			keypr = 0;
+
+			Thread.sleep(500);
+		}
 	}
-	
+
 }
