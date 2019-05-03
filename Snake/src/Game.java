@@ -4,6 +4,8 @@ import enigma.event.TextMouseEvent;
 import enigma.event.TextMouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
+
 import enigma.console.TextAttributes;
 import java.awt.Color;
 
@@ -37,8 +39,17 @@ public class Game {
 					System.out.print(" ");
 			}
 			System.out.println();
+			
 		}
+		for (int j = 0; j < 3; j++) {
+			Random rnd = new Random();
+			int x = rnd.nextInt(19)+1;
+			int y = rnd.nextInt(58)+1;
 
+			cn.getTextWindow().setCursorPosition(y, x);
+			System.out.println(snake.randomChar());
+		}
+		
 		cn.getTextWindow().setCursorPosition(65, 0);
 
 		System.out.println("SCORE: " + score);
