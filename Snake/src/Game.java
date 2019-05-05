@@ -5,6 +5,7 @@ import enigma.event.TextMouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
+import java.util.Scanner;
 
 import enigma.console.TextAttributes;
 import java.awt.Color;
@@ -20,6 +21,16 @@ public class Game {
 	int level = 0;
 	int time = 0;
 
+	public void consoleClear() {
+		cn.getTextWindow().setCursorPosition(0, 0);
+		for (int i = 0; i < 23; i++) {
+			for (int j = 0; j < 78; j++) {
+				System.out.print(" ");
+			}
+		}
+		cn.getTextWindow().setCursorPosition(0, 0);
+	}
+	
 	public void printScreen() {
 		for (int i = 0; i < 21; i++) {
 			for (int j = 0; j < 60; j++) {
@@ -27,33 +38,26 @@ public class Game {
 					backup[i][j] = '#';
 					System.out.print(backup[i][j]);
 				}
-
 				else {
 					backup[i][j] = ' ';
 					System.out.print(backup[i][j]);
 				}
-
 			}
 			System.out.println();
-
 		}
 		for (int j = 0; j < 50; j++) {
-			Random rnd = new Random();
-			int x = rnd.nextInt(19) + 1;
-			int y = rnd.nextInt(58) + 1;
-
-			cn.getTextWindow().setCursorPosition(y, x);
-			backup[x][y]=snake.randomChar();
-			System.out.println(backup[x][y]);
+			randomPosition(snake.randomChar());
 		}
+	}
+	
+	public void randomPosition(char ch) {
+		Random rnd = new Random();
+		int x = rnd.nextInt(19) + 1;
+		int y = rnd.nextInt(58) + 1;
 
-		cn.getTextWindow().setCursorPosition(65, 0);
-
-		System.out.println("SCORE: " + score);
-		cn.getTextWindow().setCursorPosition(65, 1);
-
-		System.out.println("----------");
-
+		cn.getTextWindow().setCursorPosition(y, x);
+		backup[x][y]=ch;
+		System.out.println(backup[x][y]);
 	}
 
 	public void printSnake() {
@@ -65,27 +69,42 @@ public class Game {
 
 	}
 	
-	public void cleanSnake() {
-		
+	public void cleanSnake() {	
 		int x = snake.linkedsnake.head.data.getX();
 		int y = snake.linkedsnake.head.data.getY();
 		cn.getTextWindow().setCursorPosition(x,y);
 		for (int i = 0; i < snake.linkedsnake.size(); i++) {
 			screen[y][x]=' ';
-			System.out.print(" ");
-			
+			System.out.print(" ");	
 		}
 	}
+	
+	public void scoringTable() {
+		cn.getTextWindow().setCursorPosition(65, 20);
+		System.out.println("Time:  " + time);
+		cn.getTextWindow().setCursorPosition(65, 19);
+		System.out.println("Level: " + level);
+		cn.getTextWindow().setCursorPosition(65, 0);
+		System.out.println("SCORE: " + score);
+		cn.getTextWindow().setCursorPosition(65, 1);
+		System.out.println("----------");
+	}
 
+	public String login() {
+		Scanner scan = new Scanner(System.in);
+		System.out.print("name: ");
+		String input = scan.next();
+		consoleClear();
+		return input;
+	}
 	Game() throws Exception { // --- Contructor
+		login();
 		snake = new Snake();
 		int countTime = 0;
 		printScreen();
 		printSnake();
 		while (true) {
-
-			cleanSnake();
-			
+			cleanSnake();		
 			snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX()-1);
 
 			int x = snake.linkedsnake.head.data.getX();
@@ -101,28 +120,25 @@ public class Game {
 				nd.setX(x);
 				nd.setY(y);
 				snake.add(nd);
+				score+=5;
 				
 			}
 			cn.getTextWindow().setCursorPosition(x, y);
 			printSnake();
 
 
-			Thread.sleep(500);
 			countTime++;
 			if (countTime == 2) {
 				countTime = 0;
 				time++;
 			}
-			if (time % 20 == 0) {
+			if (time % 5 == 0 && countTime==0) {
 				level++;
+				randomPosition('#');
 			}
 
-			cn.getTextWindow().setCursorPosition(65, 20);
-
-			System.out.println("Time:  " + time);
-			cn.getTextWindow().setCursorPosition(65, 19);
-
-			System.out.println("Level: " + level);
+			scoringTable();
+			Thread.sleep(100);
 
 		}
 	}
