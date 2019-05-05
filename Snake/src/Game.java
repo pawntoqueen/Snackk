@@ -64,6 +64,18 @@ public class Game {
 		snake.print();
 
 	}
+	
+	public void cleanSnake() {
+		
+		int x = snake.linkedsnake.head.data.getX();
+		int y = snake.linkedsnake.head.data.getY();
+		cn.getTextWindow().setCursorPosition(x,y);
+		for (int i = 0; i < snake.linkedsnake.size(); i++) {
+			screen[y][x]=' ';
+			System.out.print(" ");
+			
+		}
+	}
 
 	Game() throws Exception { // --- Contructor
 		snake = new Snake();
@@ -72,11 +84,8 @@ public class Game {
 		printSnake();
 		while (true) {
 
-			cn.getTextWindow().setCursorPosition(snake.linkedsnake.head.data.getX(),
-					snake.linkedsnake.head.data.getY());
-			for (int i = 0; i < snake.linkedsnake.size(); i++) {
-				System.out.print(" ");
-			}
+			cleanSnake();
+			
 			snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX()-1);
 
 			int x = snake.linkedsnake.head.data.getX();
@@ -107,9 +116,7 @@ public class Game {
 			if (time % 20 == 0) {
 				level++;
 			}
-			
-			
-			
+
 			cn.getTextWindow().setCursorPosition(65, 20);
 
 			System.out.println("Time:  " + time);
