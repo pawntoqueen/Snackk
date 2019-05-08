@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.util.Random;
 
 public class Snake {
@@ -29,9 +30,9 @@ public class Snake {
 
 	}
 	public void print() {
+		Color renk = java.awt.Color.CYAN.brighter();
 		String output= linkedsnake.display();	
-		System.out.print(output);
-
+		System.out.printf(output,renk);
 	}
 	
 	public char randomChar() {
