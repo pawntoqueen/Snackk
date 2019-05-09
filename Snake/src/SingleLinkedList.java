@@ -34,16 +34,11 @@ public class SingleLinkedList {
 		{
 			
 			String output = "";
-			String dlr="";
 			Node_SLL temp = head;
 			while(temp != null)
 			{
 				output += ((Node_data) temp.getData()).getDnapart();
 				temp = temp.getLink();
-			}
-			char[] i = output.toCharArray();
-			for (int j = i.length-1; j >=0; j--) {
-				dlr+=i[j];
 			}
 			
 			return output;

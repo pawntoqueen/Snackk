@@ -55,9 +55,9 @@ public class Game {
 			}
 			System.out.println();
 		}
-		for (int j = 0; j < 3; j++) {
+		/*for (int j = 0; j < 3; j++) {
 			randomPosition(snake.randomChar());
-		}
+		}*/
 	}
 
 	public void randomPosition(char ch) {
@@ -71,21 +71,16 @@ public class Game {
 	}
 
 	public void printSnake() {
-
-		int x = snake.linkedsnake.head.data.getX();
-		int y = snake.linkedsnake.head.data.getY();
-		screen[y][x] = snake.linkedsnake.head.data.getDnapart();
-		cn.getTextWindow().setCursorPosition(x, y);
 		snake.print();
 	}
 
 	public void cleanSnake() {
-		int x = snake.linkedsnake.head.data.getX();
-		int y = snake.linkedsnake.head.data.getY();
-		cn.getTextWindow().setCursorPosition(x, y);
-		screen[y][x] = ' ';
-		for (int i = 0; i < snake.linkedsnake.size(); i++) {
-			System.out.print(" ");
+		
+		for (int i = 0; i < 55; i++) {
+			for (int j = 0; j < 15; j++) {
+				cn.getTextWindow().setCursorPosition(3+i, 3+j);
+				System.out.println(" ");
+			}
 		}
 	}
 
@@ -112,7 +107,7 @@ public class Game {
 		//menu.menu();
 		//login();
 		snake = new Snake();
-		printScreen();
+		
 		printSnake();
 
 		// ------ Standard code for mouse and keyboard ------ Do not change
@@ -136,7 +131,12 @@ public class Game {
 		snake.direction = 0;
 		while (flag) {
 
+			
 			cleanSnake();
+			//cn.getTextWindow().setCursorPosition(x, y);
+			consoleClear();
+			printScreen();
+			printSnake();
 			// ----------------------------------------------------
 			if (keypr == 1) { // if keyboard button pressed
 				if (rkey == KeyEvent.VK_LEFT) {
@@ -146,19 +146,19 @@ public class Game {
 				if (rkey == KeyEvent.VK_RIGHT) {
 					snake.direction = 1;
 				}
-
+			
+		        if(rkey==KeyEvent.VK_UP) {
+		            snake.direction = 2;
+		       }
+		        if(rkey==KeyEvent.VK_DOWN) {
+		            snake.direction = 3;
+		       }
+		            
 				keypr = 0;
 			}
 
-			switch (snake.direction) {
-			case 0:
-				snake.linkedsnake.head.data.setX(snake.linkedsnake.head.data.getX() - 1);
-				break;
-			case 1:
-				snake.linkedsnake.head.data.setY(snake.linkedsnake.head.data.getY() - 1);
-				break;
+			
 
-			}
 
 			int x = snake.linkedsnake.head.data.getX();
 			int y = snake.linkedsnake.head.data.getY();
@@ -176,8 +176,7 @@ public class Game {
 				score += 5;
 
 			}
-			cn.getTextWindow().setCursorPosition(x, y);
-			printSnake();
+			
 
 			countTime++;
 			if (countTime == 2) {
