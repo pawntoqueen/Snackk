@@ -3,6 +3,12 @@ import enigma.core.Enigma;
 import enigma.event.TextMouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,7 +20,6 @@ public class Game {
 
 	
 	static enigma.console.Console cn = Enigma.getConsole("Game", 80, 25, 20, 0);
-	public TextMouseListener tmlis;
 	public KeyListener klis;
 
 	// ------ Standard variables for mouse and keyboard ------
@@ -22,8 +27,8 @@ public class Game {
 	public int rkey; // key (for press/release)
 	// ----------------------------------------------------
 
-	char[][] screen = new char[21][60];
-	char[][] backup = new char[21][60];
+	static char[][] screen = new char[21][60];
+	static char[][] backup = new char[21][60];
 	Snake snake;
 	boolean flag = true;
 	int score = 0;
@@ -55,9 +60,9 @@ public class Game {
 			}
 			System.out.println();
 		}
-		/*for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 3; j++) {
 			randomPosition(snake.randomChar());
-		}*/
+		}
 	}
 
 	public void randomPosition(char ch) {
@@ -74,15 +79,6 @@ public class Game {
 		snake.print();
 	}
 
-	public void cleanSnake() {
-		
-		for (int i = 0; i < 55; i++) {
-			for (int j = 0; j < 15; j++) {
-				cn.getTextWindow().setCursorPosition(3+i, 3+j);
-				System.out.println(" ");
-			}
-		}
-	}
 
 	public void scoringTable() {
 		cn.getTextWindow().setCursorPosition(65, 20);
@@ -102,12 +98,32 @@ public class Game {
 		consoleClear();
 		return input;
 	}
+	
+	public void Scoring() {
+		int x = snake.linkedsnake.head.data.getX();
+		int y = snake.linkedsnake.head.data.getY();
 
+		if (backup[y][x] == '#') {
+			System.out.println("Tisss");
+			flag = false;
+		}
+		else if (backup[y][x] != ' ') {
+			Node_data nd = new Node_data();
+			nd.setDnapart(backup[y][x]);
+			nd.setX(x);
+			nd.setY(y);
+			snake.add(nd);
+			score += 5;
+			randomPosition(snake.randomChar());
+
+		}
+	}
 	Game() throws Exception { // --- Contructor
 		//menu.menu();
 		//login();
+		consoleClear();
 		snake = new Snake();
-		
+		printScreen();
 		printSnake();
 
 		// ------ Standard code for mouse and keyboard ------ Do not change
@@ -130,13 +146,8 @@ public class Game {
 
 		snake.direction = 0;
 		while (flag) {
-
-			
-			cleanSnake();
-			//cn.getTextWindow().setCursorPosition(x, y);
-			consoleClear();
-			printScreen();
 			printSnake();
+			
 			// ----------------------------------------------------
 			if (keypr == 1) { // if keyboard button pressed
 				if (rkey == KeyEvent.VK_LEFT) {
@@ -157,26 +168,8 @@ public class Game {
 				keypr = 0;
 			}
 
-			
 
-
-			int x = snake.linkedsnake.head.data.getX();
-			int y = snake.linkedsnake.head.data.getY();
-
-			if (backup[y][x] == '#') {
-				System.out.println("Tisss");
-				flag = false;
-			}
-			else if (backup[y][x] != ' ') {
-				Node_data nd = new Node_data();
-				nd.setDnapart(backup[y][x]);
-				nd.setX(x);
-				nd.setY(y);
-				snake.add(nd);
-				score += 5;
-
-			}
-			
+			Scoring();
 
 			countTime++;
 			if (countTime == 2) {
@@ -189,7 +182,7 @@ public class Game {
 			}
 
 			scoringTable();
-			Thread.sleep(500);
+			Thread.sleep(200);
 
 		}
 	}

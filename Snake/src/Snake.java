@@ -1,5 +1,4 @@
 
-import java.awt.Color;
 import java.util.Random;
 
 public class Snake {
@@ -22,11 +21,7 @@ public class Snake {
 		int x = temp.getData().getX();
 		int y = temp.getData().getY();		
 		Node_data nd1 = ((Node_data) temp.getData());
-		int a = nd1.getX();
-		int b= nd1.getY();
-		Node_data nd2 = ((Node_data) temp.getLink().getData());
-		int c = nd2.getX();
-		int d= nd2.getY();
+		int a,b;
 		
 		switch (direction) {
 		case 0:
@@ -43,18 +38,22 @@ public class Snake {
 			break;
 		}
 		
-		 
+		
+		temp = temp.getLink();
+		
+		
 		while(temp != null)
 		{
-			c = nd2.getX();
-			d = nd2.getY();
+			nd1 = ((Node_data) temp.getData());
+			a = nd1.getX();
+			b = nd1.getY();
+
+			nd1.setX(x);
+			nd1.setY(y);
 			
-			nd2.setX(x);
-			nd2.setY(y);
-			x=c; y=d;
 			temp = temp.getLink();
-			if(temp != null)
-				nd2 = ((Node_data) temp.getData());
+	
+			x=a; y=b;
 		}
 	}
 
@@ -69,14 +68,15 @@ public class Snake {
 		move();
 		while(temp != null)
 		{
-			
+	
 			int x = temp.data.getX();
 			int y = temp.data.getY();
 			Game.cn.getTextWindow().setCursorPosition(x, y);
 			System.out.println(((Node_data) temp.getData()).getDnapart());
+			Game.screen[y][x]= temp.data.getDnapart();
 			temp = temp.getLink();
 		}
-		
+
 	}
 	
 	
@@ -106,10 +106,10 @@ public class Snake {
 		linkedsnake = new SingleLinkedList();
 		Node_data nd = new Node_data();
 		nd.setDnapart(' ');
-		nd.setX(27);
-		nd.setY(10);
+		nd.setX(0);
+		nd.setY(0);
 		add(nd);
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < 3; i++) {
 			char data=randomChar();
 			nd = new Node_data();
 			nd.setDnapart(data);
