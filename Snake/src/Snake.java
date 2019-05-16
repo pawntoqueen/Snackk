@@ -8,14 +8,6 @@ public class Snake {
 	
 	Random rndm = new Random();
 
-	public void turnLeft() {
-
-	}
-
-	public void turnRight() {
-
-	}
-
 	public void move() {
 		Node_SLL temp = linkedsnake.head;
 		int x = temp.getData().getX();
@@ -104,17 +96,11 @@ public class Snake {
 	
 	Snake() {
 		linkedsnake = new SingleLinkedList();
-		Node_data nd = new Node_data();
-		nd.setDnapart(' ');
-		nd.setX(0);
-		nd.setY(0);
+		Node_data nd = new Node_data(0,0,' ',"snake");
 		add(nd);
 		for (int i = 0; i < 3; i++) {
 			char data=randomChar();
-			nd = new Node_data();
-			nd.setDnapart(data);
-			nd.setX(26-i);
-			nd.setY(10);
+			nd = new Node_data(26-i,10,data,"snake");
 			add(nd);
 		}
 		

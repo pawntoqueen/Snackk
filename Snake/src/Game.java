@@ -1,6 +1,5 @@
 
 import enigma.core.Enigma;
-import enigma.event.TextMouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -11,14 +10,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
-
-import java.awt.Color;
-import java.awt.Window;
-
 public class Game {
 	Menu menu = new Menu();
 
-	
+
 	static enigma.console.Console cn = Enigma.getConsole("Game", 80, 25, 20, 0);
 	public KeyListener klis;
 
@@ -35,8 +30,9 @@ public class Game {
 	int level = 0;
 	int time = 0;
 	int countTime = 0;
-
-
+	String name = "";
+	static Player player;
+	DoubleLinkedList dll = new DoubleLinkedList();
 	public static void consoleClear() {
 		cn.getTextWindow().setCursorPosition(0, 0);
 		for (int i = 0; i < 23; i++) {
@@ -71,7 +67,10 @@ public class Game {
 		int y = rnd.nextInt(58) + 1;
 
 		cn.getTextWindow().setCursorPosition(y, x);
-		backup[x][y] = ch;
+		if(backup[x][y]== ' ' ) {
+			Node_data nd = new Node_data(x,y,ch,"apple");
+			backup[x][y] = nd.getDnapart();
+		}	
 		System.out.println(backup[x][y]);
 	}
 
@@ -91,13 +90,7 @@ public class Game {
 		System.out.println("----------");
 	}
 
-	public String login() {
-		Scanner scan = new Scanner(System.in);
-		System.out.print("name: ");
-		String input = scan.next();
-		consoleClear();
-		return input;
-	}
+	
 	
 	public void Scoring() {
 		int x = snake.linkedsnake.head.data.getX();
@@ -108,19 +101,100 @@ public class Game {
 			flag = false;
 		}
 		else if (backup[y][x] != ' ') {
-			Node_data nd = new Node_data();
-			nd.setDnapart(backup[y][x]);
-			nd.setX(x);
-			nd.setY(y);
+			Node_data nd = new Node_data(x,y,backup[y][x],"snake");
 			snake.add(nd);
 			score += 5;
 			randomPosition(snake.randomChar());
-
+	
 		}
+
+		countTime++;
+		if (countTime == 2) {
+			countTime = 0;
+			time++;
+		}
+		if (time % 20 == 0 && countTime == 0) {
+			level++;
+			randomPosition('#');
+		}
+
+
 	}
+	
+	public String login() {
+		Scanner scan = new Scanner(System.in);
+		cn.getTextWindow().setCursorPosition(33, 12);
+		int cl=	cn.getTextAttributes().getBackground().getBlue();
+		System.out.printf("NAME: ",cl);
+		name = scan.next();
+		Game.consoleClear();
+		return name;
+	}
+	
+	
+	public void writeIntoFile() throws IOException {
+		File file = new File("dosya.txt");
+
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        FileWriter fileWriter = new FileWriter(file, false);
+        BufferedWriter bWriter = new BufferedWriter(fileWriter);
+        bWriter.write(dll.display1());
+        bWriter.close();
+
+	}
+	
+	public void readFile() throws IOException {
+		File file = new File("dosya.txt");
+		
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        
+		FileReader fileReader = new FileReader("dosya.txt");
+		String line;
+
+		BufferedReader br = new BufferedReader(fileReader);
+	
+			while ((line = br.readLine()) != null) {
+				String[] spl = line.split(" "); 
+				int scr =Integer.parseInt(spl[2].trim());
+				 player = new Player(scr,spl[1].trim());
+				 dll.add(player);
+			}	
+
+		
+		br.close();
+
+	}
+	static public void writeToScreen() throws IOException {
+		File file = new File("dosya.txt");
+		
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        
+		FileReader fileReader = new FileReader("dosya.txt");
+		String line;
+
+		BufferedReader br = new BufferedReader(fileReader);
+		
+		while ((line = br.readLine()) != null) {
+			System.out.println(line);
+		}
+		br.close();
+
+	}
+	
+	
+	
+	
+	
 	Game() throws Exception { // --- Contructor
 		//menu.menu();
-		//login();
+		name = login();
 		consoleClear();
 		snake = new Snake();
 		printScreen();
@@ -144,24 +218,25 @@ public class Game {
 		};
 		cn.getTextWindow().addKeyListener(klis);
 
-		snake.direction = 0;
+		//snake.direction = 0;
 		while (flag) {
 			printSnake();
 			
 			// ----------------------------------------------------
+
 			if (keypr == 1) { // if keyboard button pressed
-				if (rkey == KeyEvent.VK_LEFT) {
+				if (snake.direction != 1 && rkey == KeyEvent.VK_LEFT) {
 					snake.direction = 0;
 				}
 
-				if (rkey == KeyEvent.VK_RIGHT) {
+				if (snake.direction != 0 &&rkey == KeyEvent.VK_RIGHT) {
 					snake.direction = 1;
 				}
 			
-		        if(rkey==KeyEvent.VK_UP) {
+		        if(snake.direction != 3 &&rkey==KeyEvent.VK_UP) {
 		            snake.direction = 2;
 		       }
-		        if(rkey==KeyEvent.VK_DOWN) {
+		        if(snake.direction != 2 && rkey==KeyEvent.VK_DOWN) {
 		            snake.direction = 3;
 		       }
 		            
@@ -170,21 +245,16 @@ public class Game {
 
 
 			Scoring();
-
-			countTime++;
-			if (countTime == 2) {
-				countTime = 0;
-				time++;
-			}
-			if (time % 20 == 0 && countTime == 0) {
-				level++;
-				randomPosition('#');
-			}
-
 			scoringTable();
-			Thread.sleep(200);
+			Thread.sleep(100);
 
 		}
+		player= new Player(score,name);
+		dll.add(player);
+		readFile();
+		writeIntoFile();
+		Menu.HighScoreScreen();
+
 	}
 
 }

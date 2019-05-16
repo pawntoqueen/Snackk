@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import enigma.event.TextMouseEvent;
 import enigma.event.TextMouseListener;
 
@@ -13,6 +15,7 @@ public class Menu {
 
 	public static String choice = "";
 
+	
 	public String mouseControl() throws InterruptedException {
 
 		tmlis = new TextMouseListener() {
@@ -53,6 +56,9 @@ public class Menu {
 					choice = "instructions -> menu";
 				if (mousex >= 39 && mousex <= 47 && mousey == 20)
 					choice = "go to menu";
+				if (mousex >= 0 && mousex <= 21 && mousey == 7)
+					choice = "high score table";
+				
 
 				mousepr = 0; // last action
 
@@ -64,7 +70,7 @@ public class Menu {
 
 	}
 
-	public void menu() throws InterruptedException {
+	public void menu() throws InterruptedException, IOException {
 
 		Game.cn.getTextWindow().setCursorPosition(0, 10);
 		System.out.println();
@@ -76,7 +82,6 @@ public class Menu {
 			mouseControl();
 			if (choice.equals("go to menu"))
 				break;
-
 		}
 
 		Game.consoleClear();
@@ -91,6 +96,8 @@ public class Menu {
 			System.out.println("| Instructions |");
 			System.out.println();
 			System.out.println("| Exit |");
+			System.out.println();
+			System.out.println("| High Score Table |");
 
 			mouseControl();
 
@@ -116,9 +123,35 @@ public class Menu {
 			if (choice.equals("exit"))
 				System.exit(0);
 
+			if (choice.equals("high score table")) {
+				
+				Game.consoleClear();
+				Game.writeToScreen();	
+				
+				Game.cn.getTextWindow().setCursorPosition(0, 20);
+
+				System.out.println("| Back to Menu |");
+				while (true) {
+					mouseControl();
+					if (choice.equals("instructions -> menu")) {
+
+						Game.consoleClear();
+						break;
+					}
+
+				}
+			}
 		}
 
 		Game.consoleClear();
 
+	}
+	
+	public static void HighScoreScreen() throws Exception {
+		Game.consoleClear();
+		Game.writeToScreen();
+		Game.cn.getTextWindow().setCursorPosition(65, 23);
+		System.out.println("Play Again");
+	
 	}
 }

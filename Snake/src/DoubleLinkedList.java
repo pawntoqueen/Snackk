@@ -7,7 +7,7 @@ public class DoubleLinkedList {
 		tail = null;
 	}
  
-	public void add(Integer dataToAdd) {
+	public void add(Object dataToAdd) {
 		Node_DLL newNode_DLL;
 		if (head == null) {  //list is empty
 			newNode_DLL = new Node_DLL(dataToAdd); 
@@ -20,6 +20,7 @@ public class DoubleLinkedList {
 			tail.setNext(newNode_DLL);				
 			tail=newNode_DLL;			
 		}
+		sort();
 	}
 
 	public void remove(Integer s)
@@ -66,35 +67,27 @@ public class DoubleLinkedList {
 		return count;   
 	}
 
-	public void display1()
+	public String display1()
 	{
+		String retVal ="";
+		int Count =0;
 		if (head == null)    
 			System.out.println("linked list is empty");
 		else {
 			Node_DLL temp = head;
 			while (temp != null)
 			{
-				System.out.print(temp.getData() + " ");
+				retVal+=++Count+". "+ ((Player)(temp.getData())).getName() + " "+((Player)(temp.getData())).getScore()+"\n";
 				temp = temp.getNext();
+				if(Count==10)
+					break;
 			}
 			System.out.println();
 		}
+		return retVal;
 	}	
 	
-	public void display2()
-	{
-		if (head == null)    
-			System.out.println("linked list is empty");
-		else {
-			Node_DLL temp = tail;
-			while (temp != null)
-			{
-				System.out.print(temp.getData() + " ");
-				temp = temp.getPrev();
-			}
-			System.out.println();
-		}
-	}
+	
 
 	public boolean search(Integer s)
 	{
@@ -114,24 +107,26 @@ public class DoubleLinkedList {
 		}
 		return flag;
 	}
-
-	public void display()
+	
+	public void  sort ()
 	{
-		if (head == null)    
-			System.out.println("linked list is empty");
-		else {
-			Node_DLL temp1 = head;
-			Node_DLL temp2 = tail;
-			while (temp1 != temp2 && temp1 != temp2.getNext())
-			{
-				System.out.print(temp1.getData() + " ");
-				System.out.print(temp2.getData() + " ");
-				temp1 = temp1.getNext();
-				temp2 = temp2.getPrev();
+		Node_DLL temp = head;
+
+		while(temp != null)
+		{Node_DLL sec=temp.getNext();
+		while(sec!=null)
+		{ 
+			if (((Player)temp.getData()).getScore()<((Player)sec.getData()).getScore()) 
+			{				
+				Player i=(Player)temp.getData();
+				temp.setData(sec.getData());
+				sec.setData(i);
 			}
-			if(temp1 == temp2) System.out.print(temp1.getData());
-			System.out.println();
+			sec=sec.getNext();
 		}
+		temp=temp.getNext();
+		}
+
 	}
 
 	public Object getElement(int x)
