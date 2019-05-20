@@ -70,16 +70,17 @@ public class DoubleLinkedList {
 	public String display1()
 	{
 		String retVal ="";
-		int Count =0;
+		int count =0;
 		if (head == null)    
 			System.out.println("linked list is empty");
 		else {
 			Node_DLL temp = head;
 			while (temp != null)
 			{
-				retVal+=++Count+". "+ ((Player)(temp.getData())).getName() + " "+((Player)(temp.getData())).getScore()+"\n";
+				retVal+=((Player)(temp.getData())).getName() + ";"+((Player)(temp.getData())).getScore()+"\n";
+				count++;
 				temp = temp.getNext();
-				if(Count==10)
+				if(count==10)
 					break;
 			}
 			System.out.println();

@@ -1,10 +1,10 @@
-1. Gaye 15
-2. gayeee 10
-3. fdg 5
-4. ffffffff 5
-5. dfdf 5
-6. fdf 5
-7. föjgfkjc 5
-8. gaye 5
-9. xvc 0
-10. yjghkjh 0
+Salman;10000
+Feridun;8000
+Tugce;4000
+Simge;2000
+Serkan;1200
+Boran;900
+Berat;500
+Deniz;250
+gaye;120
+Tulay;100

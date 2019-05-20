@@ -15,7 +15,7 @@ public class MultiLinkedList {
 		}
 	}
 
-	public void addItem(String Category, String Item) {
+	public void addItem(String Category, Object Item) {
 		if (head == null)
 			System.out.println("Add a Category before Item");
 		else {
@@ -80,7 +80,7 @@ public class MultiLinkedList {
 				System.out.print(temp.getCategoryName());
 				ItemNode temp2 = temp.getRight();
 				while (temp2 != null) {
-					System.out.print(temp2.getItemName());
+					System.out.print(((Aminoacid)temp2.getItemName()).getCodon()+((Aminoacid)temp2.getItemName()).getPoint());
 					temp2 = temp2.getNext();
 				}
 				temp = temp.getDown();

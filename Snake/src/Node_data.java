@@ -6,11 +6,10 @@ public class Node_data {
 	private char dnapart;
 	private String type;
 	
-	public Node_data(int x, int y, char dnapart, String type) {
+	public Node_data(int x, int y, char dnapart) {
 		this.x = x;
 		this.y = y;
 		this.dnapart = dnapart;
-		this.type = type;
 	}
 	public int getX() {
 		return x;

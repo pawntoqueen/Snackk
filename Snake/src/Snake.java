@@ -13,24 +13,29 @@ public class Snake {
 		int x = temp.getData().getX();
 		int y = temp.getData().getY();		
 		Node_data nd1 = ((Node_data) temp.getData());
-		int a,b;
+		int a,b,xx,yy;
 		
+		xx=linkedsnake.head.data.getX();
+		yy=linkedsnake.head.data.getY();
 		switch (direction) {
 		case 0:
-			linkedsnake.head.data.setX(linkedsnake.head.data.getX() - 1);
+			xx=xx-1;
 			break;
 		case 1:
-			linkedsnake.head.data.setX(linkedsnake.head.data.getX() + 1);
+			xx=xx+1;
 			break;
 		case 2:
-			linkedsnake.head.data.setY(linkedsnake.head.data.getY() - 1);
+			yy=yy-1;
 			break;
 		case 3:
-			linkedsnake.head.data.setY(linkedsnake.head.data.getY() + 1);
+			yy=yy+1;
 			break;
 		}
 		
+		if(Game.screen[yy][xx]!=' ') Game.flag=false;
 		
+		linkedsnake.head.data.setX(xx);
+		linkedsnake.head.data.setY(yy);
 		temp = temp.getLink();
 		
 		
@@ -60,7 +65,6 @@ public class Snake {
 		move();
 		while(temp != null)
 		{
-	
 			int x = temp.data.getX();
 			int y = temp.data.getY();
 			Game.cn.getTextWindow().setCursorPosition(x, y);
@@ -96,11 +100,11 @@ public class Snake {
 	
 	Snake() {
 		linkedsnake = new SingleLinkedList();
-		Node_data nd = new Node_data(0,0,' ',"snake");
+		Node_data nd = new Node_data(0,0,' ');
 		add(nd);
 		for (int i = 0; i < 3; i++) {
 			char data=randomChar();
-			nd = new Node_data(26-i,10,data,"snake");
+			nd = new Node_data(26-i,10,data);
 			add(nd);
 		}
 		

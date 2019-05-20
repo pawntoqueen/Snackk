@@ -1,13 +1,13 @@
 public class ItemNode {
-	private String ItemName;
+	private Object ItemName;
 	private ItemNode next;
 
-	public ItemNode(String dataToAdd) {
-		ItemName = dataToAdd;
+	public ItemNode(Object item) {
+		ItemName = item;
 		next = null;
 	}
 
-	public String getItemName() {
+	public Object getItemName() {
 		return ItemName;
 	}
 

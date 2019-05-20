@@ -1,5 +1,7 @@
+import java.awt.Color;
 import java.io.IOException;
 
+import enigma.console.TextAttributes;
 import enigma.event.TextMouseEvent;
 import enigma.event.TextMouseListener;
 
@@ -15,8 +17,7 @@ public class Menu {
 
 	public static String choice = "";
 
-	
-	public String mouseControl() throws InterruptedException {
+	public static String mouseControl() throws InterruptedException {
 
 		tmlis = new TextMouseListener() {
 			public void mouseClicked(TextMouseEvent arg0) {
@@ -58,7 +59,8 @@ public class Menu {
 					choice = "go to menu";
 				if (mousex >= 0 && mousex <= 21 && mousey == 7)
 					choice = "high score table";
-				
+				if (mousex >= 65 && mousex <= 80 && mousey == 23)
+					choice = "play again";
 
 				mousepr = 0; // last action
 
@@ -72,8 +74,19 @@ public class Menu {
 
 	public void menu() throws InterruptedException, IOException {
 
-		Game.cn.getTextWindow().setCursorPosition(0, 10);
-		System.out.println();
+		Game.cn.getTextWindow().setCursorPosition(5, 5);
+		System.out.println("      __  __________    _____  __    _____ _   _____    __ __ ______");
+		Game.cn.getTextWindow().setCursorPosition(5, 6);	
+		System.out.println( 		"     / / / / ____/ /   /  _/ |/ /   / ___// | / /   |  / //_// ____/");
+		Game.cn.getTextWindow().setCursorPosition(5, 7);	
+		System.out.println( 		"    / /_/ / __/ / /    / / |   /    \\__ \\/  |/ / /| | / ,<  / __/   ");
+		Game.cn.getTextWindow().setCursorPosition(5, 8);	
+		System.out.println( 		"   / __  / /___/ /____/ / /   |    ___/ / /|  / ___ |/ /| |/ /___   ");
+		Game.cn.getTextWindow().setCursorPosition(5, 9);	
+		System.out.println( 		"  /_/ /_/_____/_____/___//_/|_|   /____/_/ |_/_/  |_/_/ |_/_____/   "); 
+		Game.cn.getTextWindow().setCursorPosition(5, 10);	
+		System.out.println("                                                                    ");
+		
 
 		Game.cn.getTextWindow().setCursorPosition(30, 20);
 		System.out.println("click to | Start |");
@@ -101,15 +114,34 @@ public class Menu {
 
 			mouseControl();
 
-			
 			if (choice.equals("instructions")) {
 
 				Game.consoleClear();
-				Game.cn.getTextWindow().setCursorPosition(0, 0);
+				Game.cn.getTextWindow().setCursorPosition(20, 2);
+				TextAttributes attrs4 = new TextAttributes(Color.pink, Color.black);
+			    Game.cn.setTextAttributes(attrs4);
+				System.out.println(" * * * I N S T R U C T I O N S * * *");
+				System.out.println("");
+				System.out.println("    - Hello! Welcome to the Helix Snake's instructions. ");
+				System.out.println("    - You have a snake with 3 letters assigned randomly out of four letter "
+						+ "\n   (A, C, G, T).");
+				System.out.println("    - When the snake eats a letter, a new letter must be generated in the game "
+						+ "\n   area to maintain starting number of letters. ");
+				System.out.println("    - The snake is moving by the player using arrow keys. But be careful! "
+						+ "\n The snake do not be able to move back.");
+				System.out.println("    - When the snake eats a letter, you will earn 5 points. You will also "
+						+ "\n   earn extra points when your snake completes an amino-acid codon.");
+				System.out.println("    - You cannot use same letters for different codons!!");
+				System.out.println("    - “#” character shows the wall, if the snake bumps into a wall "
+						+ "\n   or its own body the game will be over. ");
+				System.out.println("    - One “#” wall character will appear randomly in every 20 seconds"
+						+ "\n   and level increases.");
 				System.out.println();
 				Game.cn.getTextWindow().setCursorPosition(0, 20);
-
+				TextAttributes attrs2 = new TextAttributes(Color.pink, Color.black);
+			    Game.cn.setTextAttributes(attrs2);
 				System.out.println("| Back to Menu |");
+
 				while (true) {
 					mouseControl();
 					if (choice.equals("instructions -> menu")) {
@@ -124,10 +156,10 @@ public class Menu {
 				System.exit(0);
 
 			if (choice.equals("high score table")) {
-				
+
 				Game.consoleClear();
-				Game.writeToScreen();	
-				
+				Game.writeToScreen();
+
 				Game.cn.getTextWindow().setCursorPosition(0, 20);
 
 				System.out.println("| Back to Menu |");
@@ -145,13 +177,5 @@ public class Menu {
 
 		Game.consoleClear();
 
-	}
-	
-	public static void HighScoreScreen() throws Exception {
-		Game.consoleClear();
-		Game.writeToScreen();
-		Game.cn.getTextWindow().setCursorPosition(65, 23);
-		System.out.println("Play Again");
-	
 	}
 }
