@@ -80,12 +80,32 @@ public class MultiLinkedList {
 				System.out.print(temp.getCategoryName());
 				ItemNode temp2 = temp.getRight();
 				while (temp2 != null) {
-					System.out.print(((Aminoacid)temp2.getItemName()).getCodon()+((Aminoacid)temp2.getItemName()).getPoint());
+					System.out.print(((Aminoacid)temp2.getItemName()).getCodon()+"-"+((Aminoacid)temp2.getItemName()).getPoint());
 					temp2 = temp2.getNext();
 				}
 				temp = temp.getDown();
 				System.out.println();
 			}
 		}
+	}
+	
+	public ItemNode search(String input) {
+		if (head == null)
+			System.out.println("linked list is empty");
+		else {
+			CategoryNode temp = head;
+			while (temp != null) {
+				///
+				ItemNode temp2 = temp.getRight();
+				while (temp2 != null) {
+					if(input.equals(((Aminoacid) temp2.getItemName()).getCodon())) {	
+						return temp2;
+					}
+					temp2 = temp2.getNext();
+				}
+				temp = temp.getDown();
+			}
+		}
+		return null;
 	}
 }

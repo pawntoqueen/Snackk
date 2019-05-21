@@ -6,19 +6,13 @@ import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
-import enigma.console.Console;
-import enigma.console.TextAttributes;
 import java.awt.Color;
-import java.io.*;
-import java.net.URL;
 import javax.sound.sampled.*;
-import javax.swing.*;
 public class Game {
 	Menu menu = new Menu();
 	Snake snake;
@@ -46,7 +40,7 @@ public class Game {
 	
 	public static void consoleClear() {
 		cn.getTextWindow().setCursorPosition(0, 0);
-		for (int i = 0; i < 23; i++) {
+		for (int i = 0; i < 24; i++) {
 			for (int j = 0; j < 78; j++) {
 				System.out.print(" ");
 			}
@@ -75,19 +69,23 @@ public class Game {
 	}
 
 	public void randomPosition(char ch) {
-		TextAttributes attrs = new TextAttributes(Color.blue, Color.black);
+		TextAttributes attrs = new TextAttributes(Color.gray, Color.black);
 		cn.setTextAttributes(attrs);
 		Random rnd = new Random();
 		int x = rnd.nextInt(19) + 1;
 		int y = rnd.nextInt(58) + 1;
 
 		cn.getTextWindow().setCursorPosition(y, x);
-		if(backup[x][y]== ' ' ) {
+		if(backup[x][y]== ' ' && screen[x][y]== ' ') {
 			Node_data nd = new Node_data(x,y,ch);
 			backup[x][y] = nd.getDnapart();
+			System.out.println(backup[x][y]);
+
 		}	
-		System.out.println(backup[x][y]);
+		else
+			randomPosition(ch);
 	}
+	
 	public void playsound(File Sound) {
 		  try {
 		   Clip clip = AudioSystem.getClip();
@@ -97,6 +95,8 @@ public class Game {
 		  } catch (Exception e) {
 		  }
 		 }
+	
+	
 	public void printSnake() {
 		TextAttributes attrs = new TextAttributes(Color.pink, Color.black);
 		cn.setTextAttributes(attrs);
@@ -125,16 +125,18 @@ public class Game {
 		if (backup[y][x] == '#') {
 			File Clap = new File("death.wav");
 			playsound(Clap);
-			cn.getTextWindow().setCursorPosition(28, 0);
-			System.out.println("Tisss");
 			flag = false;
 		}
 		else if (backup[y][x] != ' ') {
 			Node_data nd = new Node_data(x,y,backup[y][x]);
+			backup[y][x] = ' ';
 			snake.add(nd);
 			score += 5;
 			randomPosition(snake.randomChar());
-	
+			/////////////////////////////////////////////////
+			SingleLinkedList slll = snake.badTwinSnake();
+			scoreCodons(slll);
+			//////////////////////////////////////////////////
 		}
 
 		countTime++;
@@ -284,28 +286,42 @@ public class Game {
 		            
 				keypr = 0;
 			}
+			snake.move();
 			printSnake();
-			badTwinSnake();
 			Scoring();
 			scoringTable();
-			Thread.sleep(300);
+			Thread.sleep(150);
 
 		}
 	}
-	public void badTwinSnake() {
-		SingleLinkedList sll2 = new SingleLinkedList();
-		Node_SLL temp = snake.linkedsnake.head;
-		while(temp.getData().getDnapart()!=' ')
-		{
-			sll2.add(temp.getData());
-			temp = temp.getLink();
-		}
 		
+	public void scoreCodons(SingleLinkedList sll) {
+		String codons ="";
+		int f =0;
+		Node_SLL temp = sll.head;
+		while (temp != null) {
+			for (int i = 0; i < 3; i++) {
+				codons+=temp.getData().getDnapart();
+				temp= temp.getLink();
+			
+				if(temp == null) 
+					break;
+			}
+			cn.getTextWindow().setCursorPosition(65, 2+f);
+			if(codons.length()==3) {
+				ItemNode ndI = mll.search(codons);
+				System.out.println(((Aminoacid)(ndI.getItemName())).getCodon()+"-"+((Aminoacid)ndI.getItemName()).getPoint());
+				f++;
+				score+=((Aminoacid)ndI.getItemName()).getPoint();
+				codons ="";
+			}
+			
+		}
 	}
 	
 	
 	Game() throws Exception { // --- Contructor
-		menu.menu();
+		//menu.menu();
 		name = login();
 		consoleClear();
 		createMll();

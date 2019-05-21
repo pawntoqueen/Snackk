@@ -62,7 +62,7 @@ public class Snake {
 	}
 	public void print() {
 		Node_SLL temp = linkedsnake.head;
-		move();
+		
 		while(temp != null)
 		{
 			int x = temp.data.getX();
@@ -97,6 +97,18 @@ public class Snake {
 			}
 		return data;
 	}
+	
+	public SingleLinkedList badTwinSnake() {
+		SingleLinkedList sll2 = new SingleLinkedList();
+		Node_SLL temp = linkedsnake.head;
+		while(temp.getData().getDnapart()!=' ')
+		{
+			sll2.add(temp.getData());
+			temp = temp.getLink();
+		}
+		return sll2;
+	}
+
 	
 	Snake() {
 		linkedsnake = new SingleLinkedList();
