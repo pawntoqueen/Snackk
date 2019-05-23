@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Snake {
 
-	SingleLinkedList linkedsnake;
+	static SingleLinkedList linkedsnake;
 	int direction;
 	
 	Random rndm = new Random();

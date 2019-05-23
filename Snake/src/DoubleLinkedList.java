@@ -23,20 +23,20 @@ public class DoubleLinkedList {
 		sort();
 	}
 
-	public void remove(Integer s)
+	public void remove(Player s)
 	{		
 		if (head == null)    
 			System.out.println("linked list is empty");
 		else   
 		{
-			while (((Integer) head.getData()).equals(s))	{	   
+			while (((Player) head.getData()).equals(s))	{	   
 				head = head.getNext();
 				head.setPrev(null);
 			}
 			Node_DLL temp = head;
 			while (temp != null)
 			{
-				if (((Integer)temp.getData()).equals(s)) {
+				if (((Player)temp.getData()).equals(s)) {
 					if (temp.getNext() == null) {
 						tail = tail.getPrev();
 						tail.setNext(null);
@@ -49,6 +49,32 @@ public class DoubleLinkedList {
 				temp=temp.getNext();
 			}    	
 		}
+	}
+	public boolean remove1(Object input) {
+		if (head == null) {
+			System.out.println("DLL is empty!");
+			return false;
+		} else if (head.getData().equals(input) == true) {
+			head = head.getNext();
+			return true;
+		} else {
+			Node_DLL prev = head;
+			Node_DLL temp = prev.getNext();
+
+			while (temp != null) {
+				if (temp.getData().equals(input) == true) {
+					prev.setNext(temp.getNext());
+					return true;
+				}
+
+				prev = temp;
+				temp = temp.getNext();
+
+			}
+
+			return false;
+		}
+
 	}
 
 	public int size()
@@ -77,7 +103,7 @@ public class DoubleLinkedList {
 			Node_DLL temp = head;
 			while (temp != null)
 			{
-				retVal+=((Player)(temp.getData())).getName() + ";"+((Player)(temp.getData())).getScore()+"\n";
+				retVal+=((Player)(temp.getData())).getName() + ";"+((Player)(temp.getData())).getScore()+"\r\n";
 				count++;
 				temp = temp.getNext();
 				if(count==10)

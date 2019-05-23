@@ -16,8 +16,8 @@ import javax.sound.sampled.*;
 public class Game {
 	Menu menu = new Menu();
 	Snake snake;
-	DoubleLinkedList dll = new DoubleLinkedList();
-	MultiLinkedList mll = new MultiLinkedList();
+	DoubleLinkedList dll ;
+	MultiLinkedList mll ;
 	Aminoacid aa;
 	static enigma.console.Console cn = Enigma.getConsole("Game", 80, 25, 20, 1);
 	public KeyListener klis;
@@ -30,10 +30,10 @@ public class Game {
 	static char[][] screen = new char[21][60];
 	static char[][] backup = new char[21][60];
 	
-	static boolean flag = true;
-	int score = 0;
-	int level = 0;
-	int time = 0;
+	static boolean flag;
+	int score ;
+	int level ;
+	int time ;
 	int countTime = 0;
 	String name = "";
 	static Player player;
@@ -91,7 +91,6 @@ public class Game {
 		   Clip clip = AudioSystem.getClip();
 		   clip.open(AudioSystem.getAudioInputStream(Sound));
 		   clip.start();
-		   Thread.sleep(clip.getMicrosecondLength()/1000);
 		  } catch (Exception e) {
 		  }
 		 }
@@ -119,8 +118,9 @@ public class Game {
 	
 	
 	public void Scoring() {
-		int x = snake.linkedsnake.head.data.getX();
-		int y = snake.linkedsnake.head.data.getY();
+		int x = Snake.linkedsnake.head.data.getX();
+		int y = Snake.linkedsnake.head.data.getY();
+		int	cnt =(Snake.linkedsnake.size()-1)%3;
 
 		if (backup[y][x] == '#') {
 			File Clap = new File("death.wav");
@@ -130,14 +130,15 @@ public class Game {
 		else if (backup[y][x] != ' ') {
 			Node_data nd = new Node_data(x,y,backup[y][x]);
 			backup[y][x] = ' ';
+			File Clap = new File("bit.wav");
+			playsound(Clap);
 			snake.add(nd);
 			score += 5;
 			randomPosition(snake.randomChar());
-			/////////////////////////////////////////////////
-			SingleLinkedList slll = snake.badTwinSnake();
-			scoreCodons(slll);
-			//////////////////////////////////////////////////
+			
 		}
+		if(cnt==0)
+			scoreCodons();
 
 		countTime++;
 		if (countTime == 2) {
@@ -146,6 +147,8 @@ public class Game {
 		}
 		if (time % 20 == 0 && countTime == 0) {
 			level++;
+			File Clap = new File("levelup.wav");
+			playsound(Clap);
 			TextAttributes attrs = new TextAttributes(Color.RED, Color.YELLOW);
 			cn.setTextAttributes(attrs);
 			
@@ -162,7 +165,11 @@ public class Game {
 		int cl=	cn.getTextAttributes().getBackground().getBlue();
 		System.out.printf("NAME: ",cl);
 		name = scan.next();
-		Game.consoleClear();
+		if(!name.contains(";"))
+			return name;
+		else
+			consoleClear();
+			login();
 		return name;
 	}
 	
@@ -206,7 +213,7 @@ public class Game {
 	}
 	static public void writeToScreen() throws IOException {
 		File file = new File("dosya.txt");
-		
+		int i =0;
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -217,7 +224,9 @@ public class Game {
 		BufferedReader br = new BufferedReader(fileReader);
 		
 		while ((line = br.readLine()) != null) {
+			cn.getTextWindow().setCursorPosition(30,7+i);
 			System.out.println(line);
+			i++;
 		}
 		br.close();
 
@@ -246,7 +255,7 @@ public class Game {
 		snake = new Snake();
 		initScreen();
 		printSnake();
-		
+		flag=true;
 		klis = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 			}
@@ -266,7 +275,6 @@ public class Game {
 		while (flag) {
 			
 			
-			// ----------------------------------------------------
 
 			if (keypr == 1) { // if keyboard button pressed
 				if (snake.direction != 1 && rkey == KeyEvent.VK_LEFT) {
@@ -295,8 +303,11 @@ public class Game {
 		}
 	}
 		
-	public void scoreCodons(SingleLinkedList sll) {
+	public void scoreCodons() {
+		SingleLinkedList sll = snake.badTwinSnake();
+		score=0;
 		String codons ="";
+		int scr=0;
 		int f =0;
 		Node_SLL temp = sll.head;
 		while (temp != null) {
@@ -312,26 +323,56 @@ public class Game {
 				ItemNode ndI = mll.search(codons);
 				System.out.println(((Aminoacid)(ndI.getItemName())).getCodon()+"-"+((Aminoacid)ndI.getItemName()).getPoint());
 				f++;
-				score+=((Aminoacid)ndI.getItemName()).getPoint();
+				scr+=((Aminoacid)ndI.getItemName()).getPoint();
 				codons ="";
 			}
 			
 		}
+		score+=scr;
+		score+=5*(Snake.linkedsnake.size()-4);
+		
 	}
 	
 	
 	Game() throws Exception { // --- Contructor
-		//menu.menu();
-		name = login();
-		consoleClear();
-		createMll();
-		playGame(); 
-		player= new Player(score,name);
-		dll.add(player);
-		readFile();
-		writeIntoFile();
-		consoleClear();
-		writeToScreen();
-	}
+		int count=0;
+		while(true) {
+			dll = new DoubleLinkedList();
+			mll = new MultiLinkedList();
+			consoleClear();
+			
+			time=0;
+			score=0;
+			level=0;
+			cn.setTextAttributes(new TextAttributes(new Color(0, 255, 0)));
+			if(count==0) {
+				
+				menu.menu();
+				name = login();
+				consoleClear();
+				createMll();
+				playGame(); 
+				readFile();
+				player= new Player(score,name);
+			}
+			else {
+				consoleClear();
+				createMll();
+				playGame(); 
+				readFile();
+				dll.remove1(player);
+				player.setScore(score);
+			}
+				
+				dll.add(player);
+				writeIntoFile();
+				consoleClear();
+				menu.whoseIsThisProtein();
+				Thread.sleep(2000);
+				consoleClear();
+				writeToScreen();
 
+			count++;			
+		}
+	}
 }

@@ -22,6 +22,27 @@ public class SingleLinkedList {
 		}
 
 	}
+	
+	public void addToEnd(Object dataToAdd)
+	{
+		Node_SLL newNode = new Node_SLL(dataToAdd);
+		
+		if(head == null)
+		{
+			head = newNode;
+		}
+		else
+		{
+			Node_SLL temp = head;
+			
+			while(temp.getLink() != null)
+			{
+			   temp = temp.getLink();
+			}
+			
+			temp.setLink(newNode);
+		}
+	}
 
 	public String display() {
 
