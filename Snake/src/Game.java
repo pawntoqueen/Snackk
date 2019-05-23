@@ -9,11 +9,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.Scanner;
 import java.awt.Color;
 import javax.sound.sampled.*;
 public class Game {
+	boolean flag1 = false;
 	Menu menu = new Menu();
 	Snake snake;
 	DoubleLinkedList dll ;
@@ -94,14 +96,12 @@ public class Game {
 		  } catch (Exception e) {
 		  }
 		 }
-	
-	
+
 	public void printSnake() {
 		TextAttributes attrs = new TextAttributes(Color.pink, Color.black);
 		cn.setTextAttributes(attrs);
 		snake.print();
 	}
-
 
 	public void scoringTable() {
 		cn.setTextAttributes(new TextAttributes(new Color(255, 102, 0)));	
@@ -115,8 +115,6 @@ public class Game {
 		System.out.println("----------");
 	}
 
-	
-	
 	public void Scoring() {
 		int x = Snake.linkedsnake.head.data.getX();
 		int y = Snake.linkedsnake.head.data.getY();
@@ -172,10 +170,9 @@ public class Game {
 			login();
 		return name;
 	}
-	
-	
+
 	public void writeIntoFile() throws IOException {
-		File file = new File("dosya.txt");
+		File file = new File("highscoretable.txt");
 
         if (!file.exists()) {
             file.createNewFile();
@@ -189,13 +186,14 @@ public class Game {
 	}
 	
 	public void readFile() throws IOException {
-		File file = new File("dosya.txt");
+
+		File file = new File("highscoretable.txt");
 		
         if (!file.exists()) {
             file.createNewFile();
         }
         
-		FileReader fileReader = new FileReader("dosya.txt");
+		FileReader fileReader = new FileReader("highscoretable.txt");
 		String line;
 
 		BufferedReader br = new BufferedReader(fileReader);
@@ -211,14 +209,15 @@ public class Game {
 		br.close();
 
 	}
+	
 	static public void writeToScreen() throws IOException {
-		File file = new File("dosya.txt");
+		File file = new File("highscoretable.txt");
 		int i =0;
         if (!file.exists()) {
             file.createNewFile();
         }
         
-		FileReader fileReader = new FileReader("dosya.txt");
+		FileReader fileReader = new FileReader("highscoretable.txt");
 		String line;
 
 		BufferedReader br = new BufferedReader(fileReader);
@@ -298,7 +297,7 @@ public class Game {
 			printSnake();
 			Scoring();
 			scoringTable();
-			Thread.sleep(150);
+			Thread.sleep(200);
 
 		}
 	}
@@ -336,43 +335,73 @@ public class Game {
 	
 	Game() throws Exception { // --- Contructor
 		int count=0;
-		while(true) {
+		
+		while(!(flag1==true)) {
 			dll = new DoubleLinkedList();
 			mll = new MultiLinkedList();
 			consoleClear();
-			
+			menu.menu();
 			time=0;
 			score=0;
 			level=0;
 			cn.setTextAttributes(new TextAttributes(new Color(0, 255, 0)));
 			if(count==0) {
-				
-				menu.menu();
 				name = login();
-				consoleClear();
-				createMll();
-				playGame(); 
-				readFile();
-				player= new Player(score,name);
 			}
-			else {
-				consoleClear();
-				createMll();
-				playGame(); 
-				readFile();
-				dll.remove1(player);
-				player.setScore(score);
+			consoleClear();
+			createMll();
+			playGame(); 
+			player= new Player(score,name);
+			dll.add(player);
+			readFile();
+			writeIntoFile();
+			menu.whoseIsThisProtein();
+			Thread.sleep(2000);
+			consoleClear();
+			
+			writeToScreen();
+			menu.menu();
+			
+			
+		/*	cn.getTextWindow().setCursorPosition(0,15);
+			System.out.println("-->Your Score : "+name+" "+score);
+			
+			System.out.printf("*Enter an input to close the HighScore Table*");
+			cn.getTextWindow().setCursorPosition(15,4);
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			br.readLine();
+			consoleClear();
+			String input="";
+			while(!(input.equals("play"))||(!(input.equals("exit")))){
+				cn.setTextAttributes(new TextAttributes(new Color(0, 255, 0)));
+				cn.getTextWindow().setCursorPosition(13,6);
+				System.out.printf("*********************************************************");
+				cn.getTextWindow().setCursorPosition(13,7);
+				System.out.printf("**Please enter 'play' to start again or 'exit' to quit.**");
+				cn.getTextWindow().setCursorPosition(13,8);
+				System.out.printf("*********************************************************");
+				cn.getTextWindow().setCursorPosition(13,9);
+				System.out.printf("-->>");
+				cn.getTextWindow().setCursorPosition(18,9);
+				Scanner scan = new Scanner(System.in);
+				input=scan.next();
+				if(input.equals("play")) {
+					consoleClear();
+					flag=true;
+					break;
+					
+				}else if(input.equals("exit"))
+					System.exit(0);
+				else
+					consoleClear();
 			}
+			*/
+				count++;
 				
-				dll.add(player);
-				writeIntoFile();
-				consoleClear();
-				menu.whoseIsThisProtein();
-				Thread.sleep(2000);
-				consoleClear();
-				writeToScreen();
-
-			count++;			
 		}
+		
+		
+		
+	
 	}
 }

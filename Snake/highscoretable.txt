@@ -1,0 +1,10 @@
+Salman;10000
+Feridun;8000
+Tugce;4000
+Simge;2000
+Serkan;1200
+Boran;900
+Gaye;231
+gsye;162
+Gaye;160
+gsye;156

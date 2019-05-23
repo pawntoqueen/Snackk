@@ -190,6 +190,8 @@ public class Menu {
 				System.out.println("*Play Again*");
 				Game.cn.getTextWindow().setCursorPosition(0, 5);
 				System.out.println("*Exit*");
+				Game.writeToScreen();
+
 				mouseControl();
 				if(choice.equals("play again")) {
 					flag=false;
@@ -198,6 +200,7 @@ public class Menu {
 					
 				if(choice.equals("exit"))
 					System.exit(0);
+				Game.consoleClear();
 		}
 			
 			
