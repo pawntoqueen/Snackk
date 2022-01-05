@@ -1,6 +1,5 @@
 # Helix Snake
-[afiş.pdf](https://github.com/pawntoqueen/Snackk/files/7817711/afis.pdf)
-
+![image](https://user-images.githubusercontent.com/43170415/148287659-0eb2d2ad-a583-41d3-b230-9a43e39c9cd0.png)
 
 
 
