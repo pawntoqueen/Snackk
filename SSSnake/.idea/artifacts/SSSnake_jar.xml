@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SSSnake:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SSSnake_jar</output-path>
+    <root id="archive" name="SSSnake.jar">
+      <element id="module-output" name="SSSnake" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Enigma-Edited2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
